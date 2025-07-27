@@ -16,7 +16,7 @@ class Configuration:
         self.timeStamp = current_time_stamp
         
         
-    def get_data_ingestion_config(self)->DataIngestionConfig:
+    def get_data_ingestion_config(self)->DataIngestionConfig: 
         try:
             artifact_dir  = self.training_pipeline_config.artifact_dir
             data_ingestion_artifact_dir = os.path.join(
@@ -26,12 +26,29 @@ class Configuration:
                                                         )
             
             data_ingestion_config_info = self.config_info[DATA_INGESTION_CONFIG_KEY]
-            dataset_download_url=data_ingestion_config_info[DATA_INGESTION_DOWNLOAD_URL_KEY],
-            tgz_download_dir=os.path.join(data_ingestion_artifact_dir,data_ingestion_config_info[DATA_INGESTION_TGZ_DOWNLOAD_DIR_KEY])
-            raw_data_dir=os.path.join(data_ingestion_artifact_dir,data_ingestion_config_info[DATA_INGESTION_RAW_DATA_DIR_KEY])
-            ingested_dir = os.path.join(data_ingestion_artifact_dir,data_ingestion_config_info[DATA_INGESTION_INGESTED_DIR_NAME_KEY])
-            ingested_train_dir=os.path.join(ingested_dir,data_ingestion_config_info[DATA_INGESTION_TRAIN_DIR_KEY])
-            ingested_test_dir=os.path.join(ingested_dir,data_ingestion_config_info[DATA_INGESTION_TEST_DIR_KEY])
+
+            dataset_download_url=data_ingestion_config_info[DATA_INGESTION_DOWNLOAD_URL_KEY]
+
+            tgz_download_dir=os.path.join(
+                data_ingestion_artifact_dir,
+                data_ingestion_config_info[DATA_INGESTION_TGZ_DOWNLOAD_DIR_KEY]
+                    )
+            raw_data_dir=os.path.join(
+                data_ingestion_artifact_dir,
+                data_ingestion_config_info[DATA_INGESTION_RAW_DATA_DIR_KEY]
+                )
+            ingested_dir = os.path.join(
+                data_ingestion_artifact_dir,
+                data_ingestion_config_info[DATA_INGESTION_INGESTED_DIR_NAME_KEY]
+                )
+            ingested_train_dir=os.path.join(
+                ingested_dir,
+                data_ingestion_config_info[DATA_INGESTION_TRAIN_DIR_KEY]
+                )
+            ingested_test_dir=os.path.join(
+                ingested_dir,
+                data_ingestion_config_info[DATA_INGESTION_TEST_DIR_KEY]
+                )
 
             data_ingestion_config = DataIngestionConfig(
                 dataset_download_url=dataset_download_url,
