@@ -4,6 +4,9 @@ from housing.logger import logging
 from housing.entity.artifact_entity import DataIngestionArtifact
 import tarfile
 import os
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import StratifiedShuffleSplit
 from six.moves import urllib
 
 
@@ -55,14 +58,53 @@ class DataIngestion:
             logging.info(f"Extracting tgz file: {tgz_file_path} into dir: {raw_data_dir}")
             with tarfile.open(tgz_file_path) as housing_tgz_file_object:
                 housing_tgz_file_object.extractall(path = raw_data_dir)
-            logging.info(f"{20*'-'}Extraction completed{20*'-'}")
+            logging.info(f"Extraction completed")
 
         except Exception as e:
             raise HousingException(e) from e
  
     def split_data_train_test(self):
         try:
-            
+            raw_data_dir = self.data_ingestion_config.raw_data_dir
+            file_name = os.listdir(raw_data_dir)[0]
+            file_path = os.path.join(raw_data_dir,file_name)
+
+            housing_data = pd.read_csv(file_path)
+
+            housing_data["income_cat"] = pd.cut(housing_data['median_income'],
+                                                bins = [0.0,1.5,3.0,4.5,6.0,np.inf],
+                                                labels=[1,2,3,4,5])
+                       
+            split = StratifiedShuffleSplit(n_splits=1,test_size=0.2,random_state=42)
+
+            train_data = None
+            test_data = None
+
+            for train_index, test_index in split.split(housing_data,housing_data['income_cat']):
+                train_data = housing_data.iloc[train_index].drop(housing_data['income_cat'])
+                test_data = housing_data.iloc[test_index].drop(housing_data['income_cat'])
+
+            train_file_path = os.path.join(self.data_ingestion_config.ingested_train_dir,file_name)
+            test_file_path = os.path.join(self.data_ingestion_config.ingested_test_dir,file_name)
+
+            if train_data is not None:
+                os.makedirs(self.data_ingestion_config.ingested_train_dir)
+                train_data.to_csv(train_file_path)
+
+            if test_data is not None:
+                os.makedirs(self.data_ingestion_config.ingested_test_dir)
+                test_data.to_csv(test_file_path)
+
+            data_ingestion_artifact=DataIngestionArtifact(
+                                                train_file_path=train_file_path,
+                                                test_file_path=test_file_path,
+                                                is_ingested=True,
+                                                message="Train and Test File ingested"
+                                                )
+            return data_ingestion_artifact
+
+
+
         except Exception as e:
             raise HousingException(e) from e
  
