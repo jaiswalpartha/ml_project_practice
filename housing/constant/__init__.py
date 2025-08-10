@@ -6,7 +6,7 @@ CONFIG_FILE_NAME= "config.yaml"
 ROOT_DIR = os.getcwd()
 
 CONFIG_FILE_PATH = os.path.join(CONFIG_DIR,CONFIG_FILE_NAME)
-CURRENT_TIME_STAMP = f"{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}"
+CURRENT_TIME_STAMP = f"{datetime.now().strftime('%Y-%m-%d_%H_%M_%S')}"
 
 # TRAINING PIPELINE RELATED VARIABLE
 TRAINING_PIPELINE_CONFIG_KEY ="training_pipeline_config"

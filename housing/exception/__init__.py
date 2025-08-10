@@ -1,17 +1,17 @@
 import os
+import sys
 
 class HousingException(Exception):
     def __init__(self, error_message: Exception):
         super().__init__(error_message)
-        self.error_message = HousingException.get_detailed_error(error_message=error_message)
+        self.error_message = HousingException.get_detailed_error(error_message=error_message,sys=sys)
     
     @staticmethod
-    def get_detailed_error(error_message:Exception)->str:
-        import sys
+    def get_detailed_error(error_message:Exception,sys:sys)->str:
         _, _, traceback = sys.exc_info()
         line_no = traceback.tb_frame.f_lineno
         file_name = traceback.tb_frame.f_code.co_filename
-        detail_error_massage = f"ERROR OCCURED IN SCRIPT:[{file_name}]||LINE NUM:[{line_no}]||ERROR INFO:[{error_message}]"
+        detail_error_massage = f"ERROR OCCURED IN SCRIPT:[{file_name}] INE NUM:[{line_no}] ERROR INFO:[{error_message}]"
         return detail_error_massage
         
     def __str__(self):

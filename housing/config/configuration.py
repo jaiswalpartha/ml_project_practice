@@ -4,6 +4,7 @@ from housing.utility.utility import read_yaml_file
 from housing.logger import logging
 from housing.exception import HousingException
 from housing.constant import *
+import sys
 
 class Configuration:
     
@@ -61,37 +62,37 @@ class Configuration:
             return data_ingestion_config
         
         except Exception as e:
-            raise HousingException(e) from e
+            raise HousingException(e,sys) from e
 
     def get_data_validation_config(self)->DataValidationConfig:
         try:
             pass
         except Exception as e:
-            raise HousingException(e) from e
+            raise HousingException(e,sys) from e
 
     def get_data_tranformation_config(self)->DataTransformationConfig:
         try:
             pass
         except Exception as e:
-            raise HousingException(e) from e
+            raise HousingException(e,sys) from e
 
     def get_model_trainer_config(self)->ModelTrainerConfig:
         try:
             pass
         except Exception as e:
-            raise HousingException(e) from e
+            raise HousingException(e,sys) from e
     
     def get_model_evaluation_config(self)->ModelEvaluationConfig:
         try:
             pass
         except Exception as e:
-            raise HousingException(e) from e
+            raise HousingException(e,sys) from e
 
     def get_model_pusher_config(self)->ModelPusherConfig:
         try:
             pass
         except Exception as e:
-            raise HousingException(e) from e
+            raise HousingException(e,sys) from e
 
     def get_training_pipeline_config(self)->TrainingPipelineConfig:
         try:
@@ -103,4 +104,4 @@ class Configuration:
             logging.info(f"training_pipeline_config--> {training_pipeline_config}")
             return training_pipeline_config
         except Exception as e:
-            raise HousingException(e) from e
+            raise HousingException(e,sys) from e
